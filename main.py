@@ -1,19 +1,17 @@
-#!/usr/bin/env python3
-"""Copy the 26 November 2026 news poster into the grader's output directory."""
+"""Grader entrypoint: place the committed news poster at /output/entry.png."""
 
-import os
-import shutil
+from os import environ
 from pathlib import Path
 
 
-def main():
-    source = Path(__file__).resolve().parent / 'entry.png'
-    if not source.is_file():
-        raise SystemExit('entry.png is missing from the repository')
-    out_dir = Path(os.environ.get('MAKEFUN_OUTPUT_DIR', '/output'))
-    out_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(source, out_dir / 'entry.png')
+def hand_in_poster():
+    root = Path(__file__).parent.resolve()
+    picture = root / "entry.png"
+    if not picture.is_file():
+        raise SystemExit("entry.png was not committed")
+    destination = Path(environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
+    destination.mkdir(exist_ok=True, parents=True)
+    (destination / "entry.png").write_bytes(picture.read_bytes())
 
 
-if __name__ == '__main__':
-    main()
+hand_in_poster()
